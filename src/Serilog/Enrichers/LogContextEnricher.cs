@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #if LOGCONTEXT
+
 using Serilog.Context;
 using Serilog.Core;
 using Serilog.Events;

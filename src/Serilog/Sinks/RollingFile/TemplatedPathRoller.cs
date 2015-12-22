@@ -34,8 +34,7 @@ namespace Serilog.Sinks.RollingFile
         const string DefaultSeparator = "-";
 
         readonly string _pathTemplate;
-        readonly string _directorySearchPattern;
-        readonly string _directory;
+
         readonly Regex _filenameMatcher;
 
         public TemplatedPathRoller(string pathTemplate)
@@ -78,14 +77,14 @@ namespace Serilog.Sinks.RollingFile
                 Regex.Escape(suffix) +
                 "$");
 
-            _directorySearchPattern = filenameTemplate.Replace(DateSpecifier, "*");
-            _directory = directory;
-            _pathTemplate = Path.Combine(_directory, filenameTemplate);
+            DirectorySearchPattern = filenameTemplate.Replace(DateSpecifier, "*");
+            LogFileDirectory = directory;
+            _pathTemplate = Path.Combine(LogFileDirectory, filenameTemplate);
         }
 
-        public string LogFileDirectory { get { return _directory; } }
+        public string LogFileDirectory { get; }
 
-        public string DirectorySearchPattern { get { return _directorySearchPattern; } }
+        public string DirectorySearchPattern { get; }
 
         public void GetLogFilePath(DateTime date, int sequenceNumber, out string path)
         {

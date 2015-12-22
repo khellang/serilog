@@ -169,7 +169,7 @@ namespace Serilog.Settings.KeyValuePairs
             return convertor == null ? Convert.ChangeType(value, toType) : convertor(value);
         }
 
-        internal static IEnumerable<MethodInfo> FindSinkConfigurationMethods(IEnumerable<Assembly> configurationAssemblies)
+        internal static IList<MethodInfo> FindSinkConfigurationMethods(IEnumerable<Assembly> configurationAssemblies)
         {
             return configurationAssemblies
                 .SelectMany(a => a.
@@ -181,7 +181,8 @@ namespace Serilog.Settings.KeyValuePairs
                 .Select(t => t.GetTypeInfo()).Where(t => t.IsSealed && t.IsAbstract && !t.IsNested))
                 .SelectMany(t => t.DeclaredMethods)
                 .Where(m => m.IsStatic && m.IsPublic && m.IsDefined(typeof(ExtensionAttribute), false))
-                .Where(m => m.GetParameters()[0].ParameterType == typeof(LoggerSinkConfiguration));
+                .Where(m => m.GetParameters()[0].ParameterType == typeof(LoggerSinkConfiguration))
+                .ToList();
         }
     }
 }
